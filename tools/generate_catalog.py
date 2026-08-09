@@ -49,6 +49,16 @@ def build(source: Path) -> list[dict[str, object]]:
                 relative = challenge.relative_to(source)
                 upstream_path = Path("ctfs/DEFCON") / relative
                 files = [path for path in challenge.rglob("*") if path.is_file()]
+                readme = challenge / "README.md"
+                prompt = readme.read_text(errors="replace").strip() if readme.exists() else ""
+                artifacts = [
+                    {
+                        "path": path.relative_to(challenge).as_posix(),
+                        "bytes": path.stat().st_size,
+                    }
+                    for path in sorted(files)
+                    if path.name != "README.md"
+                ]
                 challenge_id = "/".join(
                     [str(year), stage.lower(), category, challenge.name]
                 )
@@ -62,6 +72,8 @@ def build(source: Path) -> list[dict[str, object]]:
                         "name": challenge.name,
                         "file_count": len(files),
                         "total_bytes": sum(path.stat().st_size for path in files),
+                        "prompt": prompt,
+                        "artifacts": artifacts,
                         "upstream_path": upstream_path.as_posix(),
                         "upstream_url": UPSTREAM_WEB + upstream_path.as_posix(),
                         "workspace": workspace.as_posix(),
@@ -144,4 +156,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
