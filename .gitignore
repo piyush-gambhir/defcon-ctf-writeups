@@ -1,0 +1,13 @@
+.DS_Store
+.cache/
+.venv/
+__pycache__/
+*.pyc
+
+# Original challenge assets are fetched locally and are intentionally not
+# duplicated in this repository. Some are large and contain vulnerable code.
+challenge-files/
+
+# Personal scratch space that should not leak into published write-ups.
+scratch/
+
