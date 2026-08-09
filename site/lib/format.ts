@@ -20,3 +20,13 @@ export function challengeHref(id: string) {
 export function writeupHref(id: string) {
   return `/writeups/${id.split("/").map(encodeURIComponent).join("/")}`;
 }
+
+export function challengeZipHref(id: string) {
+  return `/__downloads/challenge.zip?id=${encodeURIComponent(id)}`;
+}
+
+export function eventZipHref(year: number) {
+  return `/__downloads/event.zip?year=${year}`;
+}
+
+export const archiveZipHref = "/__downloads/archive.zip";

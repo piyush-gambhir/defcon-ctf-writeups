@@ -21,6 +21,7 @@ test("server-renders the challenge archive", async () => {
   assert.match(html, /126(?:<!-- -->)? rooms\./i);
   assert.match(html, /The archive, by year/i);
   assert.match(html, /Find the next flag/i);
+  assert.match(html, /Download all files/i);
   assert.doesNotMatch(html, /react-loading-skeleton|Your site is taking shape/i);
 });
 
@@ -31,5 +32,7 @@ test("server-renders an event and challenge route", async () => {
 
   const challengeResponse = await render("/challenges/2025/quals/uncategorized/NautilusInstituteContinuousIntegrationAndContinuousDelivery");
   assert.equal(challengeResponse.status, 200);
-  assert.match(await challengeResponse.text(), /THE QUESTION/i);
+  const challengeHtml = await challengeResponse.text();
+  assert.match(challengeHtml, /THE QUESTION/i);
+  assert.match(challengeHtml, /Download ZIP/i);
 });

@@ -1,7 +1,7 @@
 # DEF CON CTF Archive website
 
-The public companion site for the challenge catalog and write-ups in this
-repository. It is built with React, vinext, and Cloudflare Workers.
+The local companion site for the challenge catalog and write-ups in this
+repository. It is built with React and vinext and runs directly from this repo.
 
 ## Local development
 
@@ -14,7 +14,12 @@ npm run dev
 
 `npm run sync` regenerates `data/content.json` from the repository catalog,
 challenge workspaces, and published Markdown write-ups. `npm run build` runs the
-same sync step before producing the deployable Worker.
+same sync step before producing the application build.
+
+ZIP buttons are available for one challenge, one event, or the complete local
+attachment archive. Downloads are generated on demand from
+`../challenge-files/`; they are available while `npm run dev` is running. On a
+fresh clone, fetch the files first with `python3 tools/archive.py fetch-all`.
 
 ## Content model
 

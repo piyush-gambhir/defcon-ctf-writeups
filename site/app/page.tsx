@@ -1,8 +1,10 @@
 import { Explorer } from "@/components/Explorer";
 import { challenges, eventSummaries } from "@/lib/data";
+import { archiveZipHref, formatBytes } from "@/lib/format";
 
 export default function Home() {
   const solved = challenges.filter((challenge) => challenge.status === "solved").length;
+  const archiveBytes = challenges.reduce((total, challenge) => total + challenge.total_bytes, 0);
 
   return (
     <>
@@ -14,9 +16,12 @@ export default function Home() {
             A methodical run through every archived DEF CON CTF challenge—questions,
             artifacts, working notes, and original write-ups in one place.
           </p>
-          <div className="hero-progress" aria-label={`${solved} of ${challenges.length} challenges solved`}>
-            <strong>{String(solved).padStart(3, "0")}</strong>
-            <span>/ {challenges.length} solved</span>
+          <div className="hero-downloads">
+            <div className="hero-progress" aria-label={`${solved} of ${challenges.length} challenges solved`}>
+              <strong>{String(solved).padStart(3, "0")}</strong>
+              <span>/ {challenges.length} solved</span>
+            </div>
+            <a className="download-button" href={archiveZipHref} download>Download all files · {formatBytes(archiveBytes)} ↓</a>
           </div>
         </div>
       </section>

@@ -4,7 +4,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { notFound } from "next/navigation";
 import { challenges, getChallenge } from "@/lib/data";
-import { categoryLabel, formatBytes, writeupHref } from "@/lib/format";
+import { categoryLabel, challengeZipHref, formatBytes, writeupHref } from "@/lib/format";
 
 type Props = { params: Promise<{ slug: string[] }> };
 
@@ -32,6 +32,7 @@ export default async function ChallengePage({ params }: Props) {
         <div className="challenge-actions">
           <span className={`status status-${challenge.status}`}>{challenge.status}</span>
           <a href={challenge.upstream_url} target="_blank" rel="noreferrer">Original files ↗</a>
+          {challenge.artifacts.length > 0 && <a className="download-button" href={challengeZipHref(challenge.id)} download>Download ZIP · {formatBytes(challenge.total_bytes)} ↓</a>}
           {challenge.writeup && <Link href={writeupHref(challenge.id)}>Read write-up →</Link>}
         </div>
       </section>

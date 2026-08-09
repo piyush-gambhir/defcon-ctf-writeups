@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { challenges } from "@/lib/data";
-import { challengeHref, categoryLabel } from "@/lib/format";
+import { challengeHref, categoryLabel, eventZipHref, formatBytes } from "@/lib/format";
 
 type Props = { params: Promise<{ year: string }> };
 
@@ -22,13 +22,17 @@ export default async function EventPage({ params }: Props) {
   if (!eventChallenges.length) notFound();
   const categories = [...new Set(eventChallenges.map((challenge) => challenge.category))];
   const solved = eventChallenges.filter((challenge) => challenge.status === "solved").length;
+  const eventBytes = eventChallenges.reduce((total, challenge) => total + challenge.total_bytes, 0);
 
   return (
     <div className="page-shell inner-page">
       <Link href="/" className="back-link">← All events</Link>
       <section className="event-hero">
         <div><span className="eyebrow">DEF CON QUALIFIERS</span><h1>{year}</h1></div>
-        <div className="event-tally"><strong>{eventChallenges.length}</strong><span>challenges</span><strong>{solved}</strong><span>solved</span></div>
+        <div className="event-actions">
+          <div className="event-tally"><strong>{eventChallenges.length}</strong><span>challenges</span><strong>{solved}</strong><span>solved</span></div>
+          <a className="download-button" href={eventZipHref(year)} download>Download event files · {formatBytes(eventBytes)} ↓</a>
+        </div>
       </section>
       {categories.map((category) => {
         const items = eventChallenges.filter((challenge) => challenge.category === category);
