@@ -5,7 +5,7 @@ repository. It is built with React and vinext and runs directly from this repo.
 
 ## Local development
 
-Requires Node.js 22.13 or newer.
+Requires Node.js 24.
 
 ```bash
 npm install
