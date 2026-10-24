@@ -37,3 +37,5 @@ jobs:
         working-directory: site
       - run: node --test tests/rendered-html.test.mjs
         working-directory: site
+      - run: npm audit --audit-level low
+        working-directory: site
