@@ -5,10 +5,10 @@ repository. It is built with React and vinext and runs directly from this repo.
 
 ## Local development
 
-Requires Node.js 24.
+Requires Node.js 26.12.1.
 
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 
@@ -27,3 +27,5 @@ fresh clone, fetch the files first with `python3 tools/archive.py fetch-all`.
 - Progress comes from each workspace's `README.md` front matter.
 - A published solution at `../writeups/<challenge-id>.md` automatically adds a
   write-up page and link to its challenge page.
+
+Tooling and local Worker/browser verification are documented in [UPGRADE_REVIEW.md](UPGRADE_REVIEW.md). This repository does not configure a production deployment target.
