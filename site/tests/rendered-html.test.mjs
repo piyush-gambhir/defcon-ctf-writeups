@@ -1,15 +1,22 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
+// Cloudflare builds import cloudflare: modules and must run in workerd.
+let worker;
+test.before(async () => {
+  const { unstable_dev } = await import("wrangler");
+  worker = await unstable_dev("dist/server/index.js", {
+    config: "dist/server/wrangler.json",
+    local: true,
+    persist: false,
+    logLevel: "error",
+    experimental: { disableExperimentalWarning: true, disableDevRegistry: true },
+  });
+});
+test.after(async () => { await worker?.stop(); });
+
 async function render(path = "/") {
-  const workerUrl = new URL("../dist/server/index.js", import.meta.url);
-  workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
-  const { default: worker } = await import(workerUrl.href);
-  return worker.fetch(
-    new Request(`http://localhost${path}`, { headers: { accept: "text/html" } }),
-    { ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) } },
-    { waitUntil() {}, passThroughOnException() {} },
-  );
+  return worker.fetch(`http://localhost${path}`, { headers: { accept: "text/html" } });
 }
 
 test("server-renders the challenge archive", async () => {
